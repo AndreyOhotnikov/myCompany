@@ -1,0 +1,6 @@
+.infoMessage {
+  border: 1px solid black;
+  height: 400px;
+  /* The height is 400 pixels */
+  width: 600px;
+}
