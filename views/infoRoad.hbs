@@ -19,9 +19,9 @@
             {{!-- {{#if message.coord}} --}}
                       <div class="massageSend"   id="{{this.id}}">
                       <h3 ><b>{{this.name}}</b></h3><br>
-                        {{this.text}} (в тексте будут координаты)
+                        {{this.text}}
                          {{#if this.coord}}
-                      <button class="btnCoord"> Проложить маршрут</button>
+                      <button id="{{this.text}}" class="btnCoord"> Проложить маршрут</button>
                         {{/if}}
                       </div>
             {{!-- {{else}}
@@ -59,3 +59,7 @@
 
 
 </div>
+<script 
+      src="https://maps.googleapis.com/maps/api/js?key={{key2.api}}&callback=initMap&libraries=&v=weekly"
+      async
+    ></script>

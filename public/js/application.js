@@ -80,29 +80,30 @@ btnSendMess.addEventListener('click', async () => {
   });
   const {newMessage, userlogIn} = await response.json();
   console.log(newMessage, userlogIn)
-  ws.send(JSON.stringify({message : inpSendMess.value, room_id: roomTitle[0].id, coord: false}))
+  // ws.send(JSON.stringify({message : inpSendMess.value, room_id: roomTitle[0].id, coord: false}))
   inpSendMess.value = ''
-  // containerChat2[0].innerHTML = `<div class="massageSend"   id="${newMessage.id}">
-  //   <h3 ></h3><b>${userlogIn.name} Имя пользователя</b></h3><br>
-  //   ${newMessage.text}
-  //   </div>` + containerChat2[0].innerHTML;
-})
-
-ws.onopen = () => {
-  // sendForm.sendButton.disabled = false;
-};
-
-
-ws.onmessage = (event) => {
-  const { nickname, message } = JSON.parse(event.data);
-  console.log(nickname, message)
   containerChat2[0].innerHTML = `<div class="massageSend"   id="${newMessage.id}">
     <h3 ></h3><b>${userlogIn.name} Имя пользователя</b></h3><br>
     ${newMessage.text}
     </div>` + containerChat2[0].innerHTML;
-  // messages.insertAdjacentHTML('beforeend', template(nickname, message));
-};
+})
 
-ws.onclose = () => {
- console.log('ws socket closed...')
-}
+// ws.onopen = () => {
+//   // sendForm.sendButton.disabled = false;
+// };
+
+
+// ws.onmessage = (event) => {
+//   const { nickname, message } = JSON.parse(event.data);
+//   console.log(nickname, message)
+//   containerChat2[0].innerHTML = `<div class="massageSend"   id="${newMessage.id}">
+//     <h3 ></h3><b>${userlogIn.name} Имя пользователя</b></h3><br>
+//     ${newMessage.text}
+//     </div>` + containerChat2[0].innerHTML;
+//   // messages.insertAdjacentHTML('beforeend', template(nickname, message));
+// };
+
+// ws.onclose = () => {
+//  console.log('ws socket closed...')
+// }
+

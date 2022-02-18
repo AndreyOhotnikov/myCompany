@@ -8,7 +8,7 @@ let map, infoWindow;
 
 function initMap() {
 
-  console.log(545646)
+  // console.log(545646)
   const ULULU = { lat: 55, lng: 37 }; // наша метка
   const ULULU2 = { lat: 55, lng: 38 };
     // The map, centered at Uluru
@@ -51,7 +51,7 @@ function initMap() {
   //   });
 // //////////////////////////////////////////////// Cоздание маркера
   map.addListener("click", (e) => {
-    console.log(e)
+    // console.log(e)
       placeMarkerAndPanTo(e.latLng, map);
     });
 // ////////////////////////////////////////////////////// добавление маркера
@@ -137,6 +137,26 @@ function initMap() {
       handleLocationError(false, infoWindow, map.getCenter());
     }
   });
+  function btnC() {
+    const btnCoord = [...document.getElementsByClassName('btnCoord')]
+    btnCoord.forEach(el => {
+      el.addEventListener('click', ()=> {
+        // const ULULU = { lat: 55, lng: 37 }; // наша метка
+  
+        const coords = {lat:el.id.split(',')[0], lng:el.id.split(',')[1]}
+        console.log(coords)
+        // const map = new google.maps.Map(document.getElementById("map"), {
+        //   zoom: 4,
+        //   center: ULULU,
+        //   mapTypeId: 'hybrid'
+        // });
+        placeMarkerAndPanTo(coords, map)   
+      })
+    })
+  }
+  
+  
+  btnC()
 }
 
 function getMyPosition () {
@@ -211,6 +231,13 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
 
 // function coll
 
+
+
+
+
+
+
+
    // Cоздание кликабельного маркера 
    function placeMarkerAndPanTo(latLng, map) {
    //  function placeMarkerAndPanTo(latLng, map) {
@@ -226,7 +253,7 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
       infoWindow.open(map, marker);
       const coordPoint = infoWindow.map.mapUrl.slice(infoWindow.map.mapUrl.indexOf('=') + 1, infoWindow.map.mapUrl.indexOf('&')).split(',')
       const coordPointInObject = {lat: Number(coordPoint[0]), lng: Number(coordPoint[1])}
-      console.log(coordPointInObject) // получаем координаты в виде обьекта {lat: 55.9642736, lng: 37.9065324}
+      // console.log(coordPointInObject) // получаем координаты в виде обьекта {lat: 55.9642736, lng: 37.9065324}
       setTimeout(() => {
         const window = [...document.getElementsByClassName ('gm-style-iw-d')]
         // console.log(infoWindow)
@@ -240,23 +267,24 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
           // console.log('Координаты отправлены', window[0].innerText.slice(0, window[0].innerText.indexOf(`\nа b`)))
                             const containerChat2 = [...document.getElementsByClassName('containerChat2')];
                             const roomTitle = [...document.getElementsByClassName('roomTitle')];
-
+              // console.log({message : inpSendMess.value, room_id: roomTitle[0].id, coord: true})
                               const response = await fetch('/room/message', {
                                 method: "POST",
                                 credentials: 'include',
                                 headers: {
                                   'Content-Type': 'application/json'
                                 },
-                                body: JSON.stringify({message : inpSendMess.value, room_id: roomTitle[0].id, coord: false})
+                                body: JSON.stringify({message : `${coordPointInObject.lat},${coordPointInObject.lng}`, room_id: roomTitle[0].id, coord: true})// в message отправляем строку типа "34.232323,44.5454545"
                               });
                               const {newMessage, userlogIn} = await response.json();
-                              console.log(newMessage, userlogIn)
-                              ws.send(JSON.stringify(coordPointInObject));
+                              // console.log(newMessage, userlogIn)
+                              // ws.send(JSON.stringify(coordPointInObject));
                               inpSendMess.value = ''
-                              containerChat2[0].innerHTML = `<div class="massageSend"   id="${this.id}">
-                              <h3 ><b>${this.name}</b></h3><br>
-                                ${this.text}       
+                              containerChat2[0].innerHTML = `<div class="massageSend"   id="${newMessage.id}">
+                              <h3 ><b>${userlogIn.name}</b></h3><br>
+                                ${newMessage.text}  <button id="${newMessage.text}" class="btnCoord"> Проложить маршрут</button>     
                               </div>` + containerChat2[0].innerHTML;
+                              btnC();
 
         })
         btnGo.addEventListener('click', () => {

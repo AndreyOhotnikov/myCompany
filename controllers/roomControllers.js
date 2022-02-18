@@ -3,7 +3,7 @@ const {Room, User, UserInfo, Message} = require('../db/models/');
 // const {sortWays, sortRating, sortDistance } = require('../middleWares/sortWays');
 // const {ratingController} = require('./ratingController');
 
-
+require('dotenv').config();
 
 // exports.renderAllWays = async (req, res, next) => {
 //   let ways, ways1, userlogIn;
@@ -51,7 +51,7 @@ exports.renderNewMessage =  async (req, res) => {
     userlogIn = await User.findOne({ where: { id: req.session.user.id }, raw: true });
 
     if (req.body.coord) {
-      newMessage = await Message.create({ text: req.body.coord, user_id: userlogIn.id, room_id: req.body.room_id, coord: true},{returning: true,plain: true, raw: true});
+      newMessage = await Message.create({ text: req.body.message, user_id: userlogIn.id, room_id: req.body.room_id, coord: true},{returning: true,plain: true, raw: true});
     } else newMessage = await Message.create({ text: req.body.message, user_id: userlogIn.id, room_id: req.body.room_id},{returning: true,plain: true, raw: true});
     // // newRating = Number((comment.reduce((acc, el) => acc+= el.rating, 0) / comment.length).toFixed(2)) || 0; //'рейтинг отсутствует';
     // newMessage.dataValues.username = user.name;
@@ -134,7 +134,7 @@ exports.createNewRoom =  async (req, res) => {
 // }
 
 exports.renderFormInfoRoom =  async (req, res) => {
-  let room, message, userlogIn;
+  let room, message, userlogIn, key2;
   // console.log('------------------------------------------1')
   try {
     userlogIn = await User.findOne({where: {id: req.session.user.id}, raw: true});
@@ -150,12 +150,12 @@ exports.renderFormInfoRoom =  async (req, res) => {
       return el;
     })
     // console.log('------------------------------------------3', message)
-
+    key2 = {api: process.env.API}
   } catch (error) {
     return res.render('error', {message: 'Не удалось не удалось подключиться к базе данных.',  error: {}});
   }
   // comment.forEach(el => el.nameUser = el['User.name']);
   // if (userlogIn.id === way.user_id || userlogIn['UserInfo.role'] === 'admin'  || userlogIn.name === 'admin835') userlogIn.isEditor = true;
-  return res.render('infoRoad', { room, message, userlogIn });
+  return res.render('infoRoad', { room, message, userlogIn, key2 });
 }
 
